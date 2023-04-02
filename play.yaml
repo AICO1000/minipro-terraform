@@ -1,0 +1,25 @@
+---
+- name: Configure Apache
+  hosts: all
+  become: true
+  tasks:
+    - name: Install Apache
+      yum:
+        name: httpd
+        state: present
+    - name: Set timezone to Africa/Lagos
+      timezone:
+        name: Africa/Lagos
+    - name: Create index.html file
+      copy:
+        content: |
+          <html>
+          <body>
+          <h1>This is instance {{ aicodeen.me }}</h1>
+          </body>
+          </html>
+        dest: /var/www/html/index.html
+    - name: Start Apache
+      service:
+        name: httpd
+        state: started
